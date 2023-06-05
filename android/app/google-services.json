@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "415831117303",
+    "project_id": "safeguard-a2981",
+    "storage_bucket": "safeguard-a2981.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415831117303:android:481c597cb80ee545d8b2f2",
+        "android_client_info": {
+          "package_name": "com.example.safeguard_group3_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415831117303-71bgq51ckfjj65iiefl3bl54p4bjkrij.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAEMMz79WSmPnpzHsTbLioC5PShmyCh-c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415831117303-71bgq51ckfjj65iiefl3bl54p4bjkrij.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
