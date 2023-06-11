@@ -8,6 +8,8 @@ environment:
 
 dependencies:
   firebase_core: ^2.13.1
+  flutter_calendar_carousel: ^2.2.1
+
   flutter:
     sdk: flutter
 
@@ -17,4 +19,8 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
+  assets:
+    - assets/SafeGuard logo.png
+
   uses-material-design: true
+
