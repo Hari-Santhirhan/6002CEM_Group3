@@ -12,7 +12,7 @@ class SafeGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ReportPage(), // the report page
+      home: const ReportPage(), // the report page
     );
   }
 }

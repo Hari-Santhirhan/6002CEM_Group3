@@ -1,10 +1,35 @@
+import 'dart:io';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:safeguard_group3_project/report_viewModel_page.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:safeguard_group3_project/widget/camera_screen.dart';
 
-class ReportPage extends StatelessWidget {
+class ReportPage extends StatefulWidget {
   const ReportPage({Key? key}) : super(key: key);
 
   @override
+  State<ReportPage> createState() => _ReportPageState();
+}
+
+class _ReportPageState extends State<ReportPage> {
+  @override
   Widget build(BuildContext context) {
+    final ReportViewModel reportViewModel = ReportViewModel();
+    File? _capturedImage;
+
+    void _onImageCapture(File image){
+      setState(() {
+        _capturedImage = image;
+      });
+    }
+
+    void _onCancelImage(){
+      setState(() {
+        _capturedImage = null;
+      });
+    }
+
     return Scaffold(
       backgroundColor: Colors.orange,
       appBar: AppBar(
@@ -46,6 +71,8 @@ class ReportPage extends StatelessWidget {
                   child: FloatingActionButton(
                     onPressed: () {
                       // Logic Code for upload pic/vid button press
+                      reportViewModel
+                          .uploadBtnPressed(context); // viewModel
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0)),
@@ -180,7 +207,7 @@ class ReportPage extends StatelessWidget {
           ),
           FloatingActionButton(
             onPressed: () {
-              // Logic Code for upload pic/vid button press
+              // Logic Code for report button press
             },
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0)),
