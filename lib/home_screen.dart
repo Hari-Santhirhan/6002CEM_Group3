@@ -143,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget topView() {
-    return Column(
+    return ListView(
       children: <Widget>[
         Container(
           height: height * 0.35,
@@ -193,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius:
-                    BorderRadius.circular(20), // Adjust the radius as needed
+                BorderRadius.circular(20), // Adjust the radius as needed
               ),
             ),
             child: Text(
@@ -216,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> {
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius:
-                    BorderRadius.circular(20), // Adjust the radius as needed
+                BorderRadius.circular(20), // Adjust the radius as needed
               ),
             ),
             child: Text(
@@ -239,7 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius:
-                    BorderRadius.circular(20), // Adjust the radius as needed
+                BorderRadius.circular(20), // Adjust the radius as needed
               ),
             ),
             child: Text(

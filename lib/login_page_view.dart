@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-// import 'login_model.dart';
-// import 'login_view_model.dart';
+import 'login_viewmodel.dart';
 
 class loginPageView extends StatelessWidget {
-// final LoginViewModel viewModel = LoginViewModel();
+  final LoginViewModel viewModel = LoginViewModel();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +42,15 @@ class loginPageView extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                       child: Icon(
-                        Icons.person,
+                        Icons.email,
                         color: Color(0xFF757575),
                       ),
                     ),
                     Expanded(
                       child: TextField(
-                        // onChanged: (value) => viewModel.updateUsername(value),
+                        onChanged: (value) => viewModel.updateEmail(value),
                         decoration: InputDecoration(
-                          hintText: 'Username',
+                          hintText: 'Email',
                           hintStyle: TextStyle(
                             color: Color(0xFF757575),
                           ),
@@ -79,7 +80,7 @@ class loginPageView extends StatelessWidget {
                     ),
                     Expanded(
                       child: TextField(
-                        // onChanged: (value) => viewModel.updatePassword(value),
+                        onChanged: (value) => viewModel.updatePassword(value),
                         decoration: InputDecoration(
                           hintText: 'Password',
                           hintStyle: TextStyle(
@@ -98,7 +99,9 @@ class loginPageView extends StatelessWidget {
                 width: 150,
                 child: FloatingActionButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/home');
+                    String email = viewModel.loginModel.email;
+                    String password = viewModel.loginModel.password;
+                    viewModel.login(context);
                   },
                   backgroundColor: Color(0xFF7DB9B3),
                   shape: RoundedRectangleBorder(
