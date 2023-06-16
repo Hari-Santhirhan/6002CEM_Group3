@@ -16,19 +16,6 @@ class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
     final ReportViewModel reportViewModel = ReportViewModel();
-    File? _capturedImage;
-
-    void _onImageCapture(File image){
-      setState(() {
-        _capturedImage = image;
-      });
-    }
-
-    void _onCancelImage(){
-      setState(() {
-        _capturedImage = null;
-      });
-    }
 
     return Scaffold(
       backgroundColor: Colors.orange,

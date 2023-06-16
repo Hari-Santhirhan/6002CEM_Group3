@@ -22,36 +22,8 @@ class ReportViewModel extends ChangeNotifier {
     _isCameraInitialized = true;
   }
 
-  // Future<XFile?> takePicture() async { // to take and return picture
-  //   if (!_isCameraInitialized) {
-  //     throw CameraException("Failed", "Camera not initialized");
-  //   }
-  //
-  //   if (!_cameraController.value.isInitialized) {
-  //     throw CameraException("Failed", "Camera not available");
-  //   }
-  //
-  //   final picture = await _cameraController.takePicture();
-  //
-  //   return picture;
-  // }
-
   void dispose() {
     _cameraController.dispose();
-  }
-
-  Future<XFile?> recordVideo() async { // to record video
-    if(!_isCameraInitialized){
-      throw CameraException("Failed", "Camera not initialized");
-    }
-
-    if(!_cameraController.value.isInitialized){
-      throw CameraException("Failed", "Camera not initialized");
-    }
-
-    final XFile? video = await _picker.pickVideo(source: ImageSource.camera);
-
-    return video;
   }
 
   void uploadBtnPressed(BuildContext context) {
