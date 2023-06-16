@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:safeguard_group3_project/reset_viewmodel.dart';
 
 class resetView extends StatelessWidget {
+  final ResetViewModel viewModel = ResetViewModel();
+
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +57,7 @@ class resetView extends StatelessWidget {
                       ),
                       Expanded(
                         child: TextField(
-                          // onChanged: (value) => viewModel.updateUsername(value),
+                          controller: usernameController,
                           decoration: InputDecoration(
                             hintText: 'Username',
                             hintStyle: TextStyle(
@@ -83,7 +89,7 @@ class resetView extends StatelessWidget {
                       ),
                       Expanded(
                         child: TextField(
-                         // onChanged: (value) => viewModel.updateEmail(value),
+                          controller: emailController,
                           decoration: InputDecoration(
                             hintText: 'Email',
                             hintStyle: TextStyle(
@@ -114,24 +120,9 @@ class resetView extends StatelessWidget {
                   width: 140,
                   child: FloatingActionButton(
                     onPressed: () {
-                      //viewModel.resetPassword();
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Password Reset'),
-                            content: Text('Please check your email to reset your password.'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context); // Close the dialog
-                                },
-                                child: Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      String username = usernameController.text;
+                      String email = emailController.text;
+                      viewModel.resetPassword(username, email, context);
                     },
                     backgroundColor: Color(0xFF7DB9B3),
                     foregroundColor: Colors.black,
