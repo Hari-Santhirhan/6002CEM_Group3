@@ -1,13 +1,14 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:safeguard_group3_project/utils/colors_util.dart';
 import 'package:safeguard_group3_project/utils/date_utils.dart' as date_util;
 
 class MyHomePage extends StatefulWidget {
   final String title;
-  final String userId; // New argument to receive userId
+  final String userId;
 
-  const MyHomePage({Key? key, required this.title, required this.userId}) : super(key: key);
+  const MyHomePage({Key? key, required this.title, required this.userId})
+      : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -28,7 +29,30 @@ class _MyHomePageState extends State<MyHomePage> {
     scrollController =
         ScrollController(initialScrollOffset: 70.0 * currentDateTime.day);
     super.initState();
+    fetchUserId();
   }
+
+  Future<void> fetchUserId() async {
+    try {
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.userId)
+          .get();
+
+      if (userSnapshot.exists) {
+        // Get the userId from the user document
+        String userId = userSnapshot.id;
+
+        print('Fetched userId: $userId');
+      } else {
+        // Handle the case where the user document is not found
+        print('User not found');
+      }
+    } catch (e) {
+      print('Error fetching userId: $e');
+    }
+  }
+
 
   Widget backgroundView() {
     return Container(
@@ -181,29 +205,6 @@ class _MyHomePageState extends State<MyHomePage> {
               titleView(),
               hrizontalCapsuleListView(),
             ],
-          ),
-        ),
-        SizedBox(height: 16),
-        SizedBox(
-          width: 200,
-          height: 100,
-          child: ElevatedButton(
-            onPressed: () {
-              // Handle forecast button press
-              // Navigate to forecast page or perform desired action
-            },
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius:
-                BorderRadius.circular(20), // Adjust the radius as needed
-              ),
-            ),
-            child: Text(
-              "Forecast",
-              style: TextStyle(
-                fontSize: 25,
-              ),
-            ),
           ),
         ),
         SizedBox(height: 16),

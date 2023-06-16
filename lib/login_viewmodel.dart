@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'login_model.dart';
 import 'package:crypto/crypto.dart';
+import 'package:safeguard_group3_project/home_screen.dart';
 import 'dart:convert';
+
+import 'login_model.dart';
 
 class LoginViewModel extends ChangeNotifier {
   LoginModel loginModel = LoginModel(email: '', password: '');
@@ -35,11 +37,13 @@ class LoginViewModel extends ChangeNotifier {
       QuerySnapshot querySnapshot = await _firestore
           .collection('users')
           .where('email', isEqualTo: email)
+          .limit(1)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
+        // Get the user document from the query result
         DocumentSnapshot userSnapshot = querySnapshot.docs.first;
-        String userId = userSnapshot['userId'];
+        String userId = userSnapshot.id;
         String storedPassword = userSnapshot['password'];
 
         String hashedPassword = hashPassword(password);
@@ -55,7 +59,15 @@ class LoginViewModel extends ChangeNotifier {
 
           if (currentUser != null && currentUser.uid == userId) {
             // Successfully logged in
-            Navigator.pushNamed(context, '/home', arguments: userId);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyHomePage(
+                  title: 'Home',
+                  userId: userId,
+                ),
+              ),
+            );
           } else {
             // Incorrect email or password
             showDialog(
