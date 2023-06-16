@@ -172,7 +172,6 @@ class RegisterView extends StatelessWidget {
                         return; // Return early to avoid calling _showSuccessDialog on error
                       }
 
-                      _showSuccessDialog(context); // Show success dialog
                     },
                     backgroundColor: Color(0xFF7DB9B3),
                     shape: RoundedRectangleBorder(
@@ -192,26 +191,6 @@ class RegisterView extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  void _showSuccessDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Account Created'),
-          content: Text('Account successfully created!'),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the dialog
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
     );
   }
 }
