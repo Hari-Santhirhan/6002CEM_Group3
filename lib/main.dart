@@ -22,7 +22,7 @@ class SafeGuard extends StatelessWidget {
     return MaterialApp(
       home: loginPageView(),
       routes: {
-        '/home': (context) => MyHomePage(title: 'SafeGuard Home'),
+        '/home': (context) => MyHomePage(title: 'SafeGuard Home', userId: '',),
         '/login': (context) => loginPageView(),
         '/register': (context) => RegisterView(),
         '/reset': (context) => resetView(),

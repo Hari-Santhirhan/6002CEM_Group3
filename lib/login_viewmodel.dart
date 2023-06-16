@@ -55,7 +55,7 @@ class LoginViewModel extends ChangeNotifier {
 
           if (currentUser != null && currentUser.uid == userId) {
             // Successfully logged in
-            Navigator.pushNamed(context, '/home');
+            Navigator.pushNamed(context, '/home', arguments: userId);
           } else {
             // Incorrect email or password
             showDialog(

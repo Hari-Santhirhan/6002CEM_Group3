@@ -5,7 +5,9 @@ import 'package:safeguard_group3_project/utils/date_utils.dart' as date_util;
 
 class MyHomePage extends StatefulWidget {
   final String title;
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  final String userId; // New argument to receive userId
+
+  const MyHomePage({Key? key, required this.title, required this.userId}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
