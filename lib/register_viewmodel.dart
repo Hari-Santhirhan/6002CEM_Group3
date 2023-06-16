@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:safeguard_group3_project/register_model.dart';
-import 'package:crypto/crypto.dart';
-import 'dart:convert';
 
 class RegisterViewModel extends ChangeNotifier {
   RegisterModel registerModel = RegisterModel(
@@ -13,7 +11,6 @@ class RegisterViewModel extends ChangeNotifier {
   );
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  User? currentUser; // Declare currentUser variable
 
   void updateUsername(String value) {
     registerModel.username = value;
@@ -28,12 +25,6 @@ class RegisterViewModel extends ChangeNotifier {
   void updateEmail(String value) {
     registerModel.email = value;
     notifyListeners();
-  }
-
-  String hashPassword(String password) {
-    var bytes = utf8.encode(password); // Convert password to bytes
-    var hashed = sha256.convert(bytes); // Hash the bytes using SHA-256
-    return hashed.toString();
   }
 
   Future<void> register(BuildContext context) async {
@@ -112,21 +103,17 @@ class RegisterViewModel extends ChangeNotifier {
         return; // Stop registration process if the username is invalid
       }
 
-      // Hash the password
-      String hashedPassword = hashPassword(password);
-
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      currentUser = userCredential.user;
+      User? currentUser = userCredential.user;
 
       // Store user data in Firestore
       await _firestore.collection('users').doc(currentUser!.uid).set({
-        'userId': currentUser!.uid,
+        'userId': currentUser.uid,
         'username': username,
-        'password': hashedPassword,
         'email': email,
       });
 

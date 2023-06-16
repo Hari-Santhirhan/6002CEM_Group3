@@ -4,8 +4,6 @@ import 'login_viewmodel.dart';
 class loginPageView extends StatelessWidget {
   final LoginViewModel viewModel = LoginViewModel();
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,7 +118,7 @@ class loginPageView extends StatelessWidget {
               InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, '/reset');
-                }, //== viewModel.forgotPassword,
+                },
                 child: Text(
                   'I forgot my password. Click here to reset',
                   style: TextStyle(
@@ -135,7 +133,8 @@ class loginPageView extends StatelessWidget {
                   Navigator.pushNamed(context, '/register');
                 },
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Color(0xFF176679),
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0xFF176679),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -153,7 +152,6 @@ class loginPageView extends StatelessWidget {
                   ),
                 ),
               ),
-
             ],
           ),
         ),

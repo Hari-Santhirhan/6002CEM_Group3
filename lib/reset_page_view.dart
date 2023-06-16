@@ -4,7 +4,6 @@ import 'package:safeguard_group3_project/reset_viewmodel.dart';
 class resetView extends StatelessWidget {
   final ResetViewModel viewModel = ResetViewModel();
 
-  final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
   @override
@@ -36,38 +35,6 @@ class resetView extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18.0,
                     color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: 22.0),
-                Container(
-                  width: 309.0,
-                  height: 43.0,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFEAEAEA),
-                    border: Border.all(color: Colors.black),
-                  ),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Icon(
-                          Icons.person,
-                          color: Color(0xFF757575),
-                        ),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: usernameController,
-                          decoration: InputDecoration(
-                            hintText: 'Username',
-                            hintStyle: TextStyle(
-                              color: Color(0xFF757575),
-                            ),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                 ),
                 SizedBox(height: 20.0),
@@ -119,10 +86,9 @@ class resetView extends StatelessWidget {
                 SizedBox(
                   width: 140,
                   child: FloatingActionButton(
-                    onPressed: () {
-                      String username = usernameController.text;
+                    onPressed: () async {
                       String email = emailController.text;
-                      viewModel.resetPassword(username, email, context);
+                      await viewModel.resetPassword(email, context);
                     },
                     backgroundColor: Color(0xFF7DB9B3),
                     foregroundColor: Colors.black,

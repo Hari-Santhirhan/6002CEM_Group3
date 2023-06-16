@@ -4,7 +4,7 @@ import 'register_viewmodel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterView extends StatelessWidget {
-   RegisterViewModel viewModel = RegisterViewModel();
+  final RegisterViewModel viewModel = RegisterViewModel();
 
   @override
   Widget build(BuildContext context) {
