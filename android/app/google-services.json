@@ -29,6 +29,13 @@
             {
               "client_id": "415831117303-71bgq51ckfjj65iiefl3bl54p4bjkrij.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "415831117303-roel5koakkphmmvcfk76no75m0skcl72.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.safeguardGroup3Project"
+              }
             }
           ]
         }

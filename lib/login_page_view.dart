@@ -115,7 +115,9 @@ class loginPageView extends StatelessWidget {
               ),
               SizedBox(height: 9.0),
               InkWell(
-                onTap: () {}, // viewModel.forgotPassword,
+                onTap: () {
+                  Navigator.pushNamed(context, '/reset');
+                }, //== viewModel.forgotPassword,
                 child: Text(
                   'I forgot my password. Click here to reset',
                   style: TextStyle(
@@ -125,22 +127,30 @@ class loginPageView extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 38.0),
-              Container(
-                width: 309.0,
-                height: 43.0,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
-                  color: Color(0xFF176679),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/register');
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: Color(0xFF176679),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
                 ),
-                child: Center(
-                  child: Text(
-                    'Register New Account',
-                    style: TextStyle(
-                      color: Colors.white,
+                child: Container(
+                  width: 309.0,
+                  height: 43.0,
+                  child: Center(
+                    child: Text(
+                      'Register New Account',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
               ),
+
             ],
           ),
         ),
