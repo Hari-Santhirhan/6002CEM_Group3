@@ -13,10 +13,16 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportPageState extends State<ReportPage> {
+  final ReportViewModel reportViewModel = ReportViewModel();
+
+  void _imageDisappear(){
+    setState(() {
+      reportViewModel.isImagePresent = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ReportViewModel reportViewModel = ReportViewModel();
-
     return Scaffold(
       backgroundColor: Colors.orange,
       appBar: AppBar(
@@ -44,6 +50,9 @@ class _ReportPageState extends State<ReportPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                //CHANGES ARE HERE
+
+                //CHANGES ARE HERE
                 Transform.scale(
                   scale: 4.0,
                   child: Icon(

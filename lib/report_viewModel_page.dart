@@ -1,12 +1,16 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
+import 'package:safeguard_group3_project/report_view_page.dart';
 import 'package:safeguard_group3_project/widget/camera_screen.dart';
 
 class ReportViewModel extends ChangeNotifier {
   final ImagePicker _picker = ImagePicker(); // to pick images from gallery
   late CameraController _cameraController; // control device camera
   bool _isCameraInitialized = false; // check camera initialized
+  String? imageValue;
+  bool isImagePresent = false;
 
   Future<void> _initializeCamera() async { // retrives available cameras
     final cameras = await availableCameras();
@@ -22,9 +26,21 @@ class ReportViewModel extends ChangeNotifier {
     _isCameraInitialized = true;
   }
 
+  void processImage(String storedImage){
+    imageValue = storedImage;
+    if (imageValue != null){
+      isImagePresent = true;
+    }
+    else{
+      isImagePresent = false;
+    }
+  }
+
   void dispose() {
     _cameraController.dispose();
   }
+
+
 
   void uploadBtnPressed(BuildContext context) {
     // handles upload btn press
@@ -53,7 +69,6 @@ class ReportViewModel extends ChangeNotifier {
                   //Logic Code for camera option
                   try {
                     await _initializeCamera();
-
                   } catch (e) {
                     showDialog(
                       context: context,
