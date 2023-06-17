@@ -17,12 +17,13 @@ class ReportViewModel extends ChangeNotifier {
       if (report.title == null ||
           report.desc == null ||
           report.location == null ||
-          report.category == null) {
+          report.category == null ||
+          report.userId == null) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Incomplete Details'),
+              title: Text('Incomplete Details ' + report.userId.toString()),
               content: Text('Please enter all details before submitting.'),
               actions: [
                 TextButton(
@@ -40,7 +41,7 @@ class ReportViewModel extends ChangeNotifier {
 
       // Access the Firestore collection
       final CollectionReference reportsCollection =
-      FirebaseFirestore.instance.collection('report_submissions');
+          FirebaseFirestore.instance.collection('report_submissions');
 
       // Convert the report model to a map
       Map<String, dynamic> reportData = report.toMap();

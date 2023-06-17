@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:safeguard_group3_project/home_screen.dart';
 import 'package:safeguard_group3_project/pages/contacts_page/contact_list_trial_2.dart';
 import 'package:safeguard_group3_project/pages/map_page/maps_page.dart';
+import 'package:safeguard_group3_project/report_view_page.dart';
 import 'package:safeguard_group3_project/widget/settings_appbar_widget.dart';
 
 import '../profile_page/profile_pageTest2.dart';
+import '../profile_page/profile_pageTest3.dart';
 // Other imports...
 
 class SettingsPage extends StatefulWidget {
@@ -27,14 +29,19 @@ class _SettingsPageState extends State<SettingsPage> {
     } else if (index == 1) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MapsPage()),
+        MaterialPageRoute(builder: (context) => ReportPage()),
       );
     } else if (index == 2) {
       Navigator.pushReplacement(
         context,
+        MaterialPageRoute(builder: (context) => MapsPage()),
+      );
+    }else if (index == 3) {
+      Navigator.pushReplacement(
+        context,
         MaterialPageRoute(builder: (context) => ContactListPageTrial2()),
       );
-    } else if (index == 3) {
+    } else if (index == 4) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => SettingsPage()),
@@ -75,7 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePageTest2()),
+                  MaterialPageRoute(builder: (context) => ProfilePageTest3()),
                 );
               },
             ),

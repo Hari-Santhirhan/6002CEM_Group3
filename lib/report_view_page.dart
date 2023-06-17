@@ -1,9 +1,16 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:safeguard_group3_project/pages/contacts_page/contact_list_trial_2.dart';
+import 'package:safeguard_group3_project/pages/map_page/maps_page.dart';
+import 'package:safeguard_group3_project/pages/settings_page/setting_page.dart';
 import 'package:safeguard_group3_project/report_model.dart';
 import 'package:safeguard_group3_project/report_viewModel_page.dart';
 import 'package:safeguard_group3_project/list/category_list.dart';
 import 'package:provider/provider.dart';
+
+import 'home_screen.dart';
 
 class ReportPage extends StatefulWidget {
   const ReportPage({Key? key}) : super(key: key);
@@ -13,11 +20,14 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportPageState extends State<ReportPage> {
+  int _selectedIndex = 1;
   final ReportViewModel reportViewModel = ReportViewModel();
   String? selectedCategory;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController locationController = TextEditingController();
+  User? userId;
+  late String? userID;
 
   @override
   void dispose() {
@@ -30,6 +40,38 @@ class _ReportPageState extends State<ReportPage> {
 
   bool shouldDisplayLabel(String? text) {
     return text == null || text.isEmpty;
+  }
+
+  void _onItemTapped(int index) {
+    // Handle navigation based on the index
+    if (index == 0) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage(title: 'Home', userId: 'userId')),
+      );
+
+    }else if (index == 1) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ReportPage()),
+      );
+    }
+    else if (index == 2) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MapsPage()),
+      );
+    } else if (index == 3) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ContactListPageTrial2()),
+      );
+    } else if (index == 4) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SettingsPage()),
+      );
+    }
   }
 
   @override
@@ -247,7 +289,19 @@ class _ReportPageState extends State<ReportPage> {
                   return FloatingActionButton(
                     onPressed: () async {
                       // Generate report ID
-                      String reportId = DateTime.now().microsecondsSinceEpoch.toString();
+                      String reportId =
+                      DateTime.now().microsecondsSinceEpoch.toString();
+
+                      final FirebaseAuth _auth = FirebaseAuth.instance;
+
+                      Future<String> _getUserId() async {
+                        userId = _auth.currentUser;
+                        DocumentSnapshot snapshot = await FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(userId!.uid)
+                            .get();
+                         return snapshot.id;
+                      }
 
                       // Create a ReportModel instance
                       ReportModel report = ReportModel(
@@ -256,6 +310,7 @@ class _ReportPageState extends State<ReportPage> {
                         location: locationController.text,
                         category: selectedCategory,
                         reportId: reportId,
+                        userId: userID,
                       );
 
                       // Submit report to Firestore
@@ -285,6 +340,35 @@ class _ReportPageState extends State<ReportPage> {
                 },
               ),
             ),
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.blue, // Set selected icon color to blue
+          unselectedItemColor: Colors.black, // Set unselected icon color to black
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Home",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.report_problem),
+              label: "Report",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.map),
+              label: "Map",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.contacts),
+              label: "Contacts",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: "Settings",
+            ),
+            // Add other bottom navigation bar items as needed
           ],
         ),
       ),

@@ -7,6 +7,7 @@ import 'package:safeguard_group3_project/pages/map_page/maps_page.dart';
 import 'package:safeguard_group3_project/pages/settings_page/setting_page.dart';
 
 import '../../model/contacts_model.dart';
+import '../../report_view_page.dart';
 import '../../widget/appbar_emptyIcon.dart';
 import '../../widget/contact_reload.dart';
 import 'contact_detail_page.dart';
@@ -17,7 +18,7 @@ class ContactListPageTrial2 extends StatefulWidget {
 }
 
 class _ContactListPageTrial2State extends State<ContactListPageTrial2> {
-  int _selectedIndex = 2; // New
+  int _selectedIndex = 3; // New
 
   List<Contact> contacts = [
     Contact(
@@ -83,14 +84,24 @@ class _ContactListPageTrial2State extends State<ContactListPageTrial2> {
         context,
         MaterialPageRoute(builder: (context) => HomePage(title: 'Home', userId: 'userId')),
       );
-    } else if (index == 1) {
+
+    }else if (index == 1) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ReportPage()),
+      );
+    }
+    else if (index == 2) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MapsPage()),
       );
-    } else if (index == 2) {
-      // Already on the contacts page, no action needed
     } else if (index == 3) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ContactListPageTrial2()),
+      );
+    } else if (index == 4) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => SettingsPage()),
@@ -181,6 +192,10 @@ class _ContactListPageTrial2State extends State<ContactListPageTrial2> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.report_problem),
+            label: "Report",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.map),
