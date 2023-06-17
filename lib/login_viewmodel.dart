@@ -46,7 +46,7 @@ class LoginViewModel extends ChangeNotifier {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MyHomePage(
+            builder: (context) => HomePage(
               title: 'Home',
               userId: currentUser.uid,
             ),

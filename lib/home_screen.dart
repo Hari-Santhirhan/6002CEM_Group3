@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:safeguard_group3_project/pages/contacts_page/contact_list_trial_2.dart';
+import 'package:safeguard_group3_project/pages/map_page/maps_page.dart';
+import 'package:safeguard_group3_project/pages/settings_page/setting_page.dart';
 import 'package:safeguard_group3_project/utils/colors_util.dart';
 import 'package:safeguard_group3_project/utils/date_utils.dart' as date_util;
 
-class MyHomePage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   final String title;
   final String userId;
 
-  const MyHomePage({Key? key, required this.title, required this.userId})
+  const HomePage({Key? key, required this.title, required this.userId})
       : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+
+class _HomePageState extends State<HomePage> {
   double width = 0.0;
   double height = 0.0;
   late ScrollController scrollController;
   List<DateTime> currentMonthList = List.empty();
   DateTime currentDateTime = DateTime.now();
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -31,6 +36,33 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     fetchUserId();
   }
+
+  void _onItemTapped(int index) {
+    // Handle navigation based on the index
+    if (index == 0) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage(title: 'Home', userId: 'userId')),
+      );
+    } else if (index == 1) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MapsPage()),
+      );
+    } else if (index == 2) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ContactListPageTrial2()),
+      );
+    } else if (index == 3) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SettingsPage()),
+      );
+    }
+  }
+
+
 
   Future<void> fetchUserId() async {
     try {
@@ -54,16 +86,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
+
   Widget backgroundView() {
     return Container(
       decoration: BoxDecoration(
         color: HexColor("FFEAEAEA"),
-        // image: DecorationImage(
-        //   image: const AssetImage("assets/images/bg.png"),
-        //   fit: BoxFit.cover,
-        //   colorFilter: ColorFilter.mode(
-        //       Colors.black.withOpacity(0.2), BlendMode.lighten),
-        // ),
       ),
     );
   }
@@ -76,7 +103,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ' ' +
             currentDateTime.year.toString(),
         style: const TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 30,
+        ),
       ),
     );
   }
@@ -218,8 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius:
-                BorderRadius.circular(20), // Adjust the radius as needed
+                borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
               ),
             ),
             child: Text(
@@ -241,8 +270,7 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius:
-                BorderRadius.circular(20), // Adjust the radius as needed
+                borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
               ),
             ),
             child: Text(
@@ -262,11 +290,43 @@ class _MyHomePageState extends State<MyHomePage> {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
+      appBar: AppBar(
+        // Add the desired navigation elements to the AppBar
+        // Example: leading, actions, etc.
+        title: Text(widget.title),
+        automaticallyImplyLeading: false, // Remove the back button
+      ),
       body: Stack(
         children: <Widget>[
           backgroundView(),
           topView(),
         ],
+      ),
+
+
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.blue, // Set selected icon color to blue
+        unselectedItemColor: Colors.black, // Set unselected icon color to black
+        currentIndex: _selectedIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: "Map",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.contacts),
+            label: "Contacts",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Settings",
+          ),
+        ],
+        onTap: _onItemTapped,
       ),
     );
   }

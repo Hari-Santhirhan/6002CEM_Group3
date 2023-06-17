@@ -18,51 +18,53 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
 
-    // getUser();
-    // return FutureBuilder<List>(
-    //     future: Future.wait([
-    //       getUser(),
-    //     ]),
-    //     builder: (BuildContext context, AsyncSnapshot<List> snapshot){
-    //       if( snapshot.connectionState == ConnectionState.waiting){
-    //         return  Scaffold(
-    //             body: Center(
-    //                 child: LoadingAnimationWidget.staggeredDotsWave(
-    //                     color: Colors.purple, size: 200
-    //                 )
-    //             )
-    //         );
-    //       }
-    //       else{
-    //         user = snapshot.data![0];
-            return Scaffold(
-              //top bar
-              appBar: buildAppBar(context, "Profile Page"),
-              backgroundColor: Color.fromARGB(255, 228, 218, 218),
-              //list view # maybe edit this to change the look
-              body: ListView(
-                physics: BouncingScrollPhysics(),
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  //the image method
-                  ProfileWidget(
-                    imagePath: "../assets/user_profile.png",
-                    onClicked: () async {},
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  buildInfo(user.first),
-                  buildContent(user.first),
-                  buildActivity(user.first),
-                ],
+    getUser();
+    return FutureBuilder<List>(
+      future: Future.wait([
+        getUser(),
+      ]),
+      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                color: Colors.purple,
+                size: 200,
               ),
-            );
-          }
-  //       });
-  // }
+            ),
+          );
+        } else {
+          List<Users> users = snapshot.data![0];
+          Users user = users.first;
+          return Scaffold(
+            //top bar
+            appBar: buildAppBar(context, "Profile Page"),
+            backgroundColor: Color.fromARGB(255, 228, 218, 218),
+            //list view # maybe edit this to change the look
+            body: ListView(
+              physics: BouncingScrollPhysics(),
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                //the image method
+                ProfileWidget(
+                  imagePath: "../assets/user_profile.png",
+                  onClicked: () async {},
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                buildInfo(user),
+                buildContent(user),
+                buildActivity(user),
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
 
   // user info display
   Widget buildInfo(Users user) => Column(
@@ -217,15 +219,18 @@ class _ProfilePageState extends State<ProfilePage> {
     ),
   );
 
-  // Future<List> getUser() async {
-  //   final curr_user = FirebaseAuth.instance.currentUser!.uid;
-  //
-  //   QuerySnapshot query = await FirebaseFirestore.instance.collection("User").where("id", isEqualTo: curr_user).get();
-  //
-  //   final user = query.docs.map((doc)=> Users.fromJson(doc.data() as Map<String, dynamic>)).toList();
-  //
-  //   print(user);
-  //
-  //   return user;
-  // }
+  Future<List<Users>> getUser() async {
+    final currUserId = FirebaseAuth.instance.currentUser!.uid;
+
+    QuerySnapshot query = await FirebaseFirestore.instance
+        .collection("users")
+        .where("userId", isEqualTo: currUserId)
+        .get();
+
+    final users = query.docs.map((doc) => Users.fromJson(doc.data() as Map<String, dynamic>)).toList();
+
+    print(users);
+
+    return users;
+  }
 }

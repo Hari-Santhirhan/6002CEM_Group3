@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safeguard_group3_project/reset_viewmodel.dart';
 
-class resetView extends StatelessWidget {
+class ResetView extends StatelessWidget {
   final ResetViewModel viewModel = ResetViewModel();
 
   final TextEditingController emailController = TextEditingController();

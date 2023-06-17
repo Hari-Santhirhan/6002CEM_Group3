@@ -12,8 +12,6 @@ import 'package:safeguard_group3_project/home_screen.dart';
 import 'package:safeguard_group3_project/login_page_view.dart';
 import 'package:safeguard_group3_project/register_page_view.dart';
 import 'package:safeguard_group3_project/reset_page_view.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -31,19 +29,25 @@ class SafeGuard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        navigatorKey: navigatorKey,
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryColor: Color.fromARGB(255, 225, 229, 130),
-        ),
-        home: Navigation());
-    return MaterialApp(
-      home: loginPageView(),
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Color.fromARGB(255, 225, 229, 130),
+      ),
+      initialRoute: '/login',
+      onGenerateRoute: (settings) {
+        if (settings.name == '/login') {
+          return MaterialPageRoute(
+            builder: (context) => LoginPageView(),
+            settings: settings,
+          );
+        }
+        return null;
+      },
       routes: {
-        '/home': (context) => MyHomePage(title: 'SafeGuard Home', userId: '',),
-        '/login': (context) => loginPageView(),
+        '/home': (context) => HomePage(title: 'SafeGuard Home', userId: ''),
         '/register': (context) => RegisterView(),
-        '/reset': (context) => resetView(),
+        '/reset': (context) => ResetView(),
       },
     );
   }

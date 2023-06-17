@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:safeguard_group3_project/home_screen.dart';
 import 'package:safeguard_group3_project/pages/contacts_page/add_contact_page.dart';
+import 'package:safeguard_group3_project/pages/map_page/maps_page.dart';
+import 'package:safeguard_group3_project/pages/settings_page/setting_page.dart';
 
 import '../../model/contacts_model.dart';
 import '../../widget/appbar_emptyIcon.dart';
@@ -14,7 +17,7 @@ class ContactListPageTrial2 extends StatefulWidget {
 }
 
 class _ContactListPageTrial2State extends State<ContactListPageTrial2> {
-  //final curr_user = FirebaseAuth.instance.currentUser!; #Uncomment this when integrating
+  int _selectedIndex = 2; // New
 
   List<Contact> contacts = [
     Contact(
@@ -67,8 +70,31 @@ class _ContactListPageTrial2State extends State<ContactListPageTrial2> {
     // with login page
     if (mounted) {
       setState(() {
-        contacts.addAll(contactDocs.docs.map((doc) => Contact.fromJson(doc.data(), doc.id)).toList());
+        contacts.addAll(contactDocs.docs
+            .map((doc) => Contact.fromJson(doc.data(), doc.id))
+            .toList());
       });
+    }
+  }
+
+  void _onItemTapped(int index) {
+    if (index == 0) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage(title: 'Home', userId: 'userId')),
+      );
+    } else if (index == 1) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MapsPage()),
+      );
+    } else if (index == 2) {
+      // Already on the contacts page, no action needed
+    } else if (index == 3) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SettingsPage()),
+      );
     }
   }
 
@@ -107,7 +133,10 @@ class _ContactListPageTrial2State extends State<ContactListPageTrial2> {
                       IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () async {
-                          await FirebaseFirestore.instance.collection('contacts').doc(contacts[index].id).delete();
+                          await FirebaseFirestore.instance
+                              .collection('contacts')
+                              .doc(contacts[index].id)
+                              .delete();
                           setState(() {
                             contacts.removeAt(index);
                           });
@@ -143,6 +172,30 @@ class _ContactListPageTrial2State extends State<ContactListPageTrial2> {
             });
           }
         },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.black,
+        currentIndex: _selectedIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: "Map",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.phone_android),
+            label: "Contacts",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Settings",
+          ),
+        ],
+        onTap: _onItemTapped,
       ),
     );
   }

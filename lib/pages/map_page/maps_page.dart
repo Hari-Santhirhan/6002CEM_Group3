@@ -5,7 +5,11 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:safeguard_group3_project/pages/settings_page/setting_page.dart';
 import 'package:safeguard_group3_project/widget/appbar_widget.dart';
+
+import '../../home_screen.dart';
+import '../contacts_page/contact_list_trial_2.dart';
 
 class MapsPage extends StatefulWidget {
   @override
@@ -16,8 +20,7 @@ class _MapsPageState extends State<MapsPage> {
   List<Marker> markers = [];
   MapController mapController = MapController();
   LatLng? currentLocation;
-  //final curr_user = FirebaseAuth.instance.currentUser!;
-  //final curr_user_id = FirebaseAuth.instance.currentUser!.uid;
+  int selectedIndex = 1; // Selected index for bottom navigation bar
 
   @override
   void initState() {
@@ -28,87 +31,130 @@ class _MapsPageState extends State<MapsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: buildAppBar(context, "Map Page"),
-          body: Column(
-            children: [
-              Expanded(
-                flex: 5,
-                child: currentLocation == null
-                    ? Center(child: CircularProgressIndicator())
-                    : FlutterMap(
-                        mapController: mapController,
-                        options: MapOptions(
-                          center: currentLocation,
-                          zoom: 13.0,
-                          onTap: _handleTap,
-                        ),
-                        layers: [
-                          TileLayerOptions(
-                            urlTemplate:
-                                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                            subdomains: ['a', 'b', 'c'],
-                          ),
-                          MarkerLayerOptions(markers: markers),
-                        ],
-                      ),
+    return Scaffold(
+      appBar: buildAppBar(context, "Map Page"),
+      body: Column(
+        children: [
+          Expanded(
+            flex: 5,
+            child: currentLocation == null
+                ? Center(child: CircularProgressIndicator())
+                : FlutterMap(
+              mapController: mapController,
+              options: MapOptions(
+                center: currentLocation,
+                zoom: 13.0,
+                onTap: _handleTap,
               ),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                  ),
-                  child: StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('reports')
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) return CircularProgressIndicator();
-                      return ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          DocumentSnapshot report = snapshot.data!.docs[index];
-                          GeoPoint location = report['location'];
-                          return ListTile(
-                            title: Text(report['report']),
-                            subtitle: Text("User Reported:"
-                                '${report['user']}'),
-                            trailing: IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () async {
-                                await FirebaseFirestore.instance
-                                    .collection('reports')
-                                    .doc(report.id)
-                                    .delete();
-                                _loadMarkers(); // Refresh markers after deletion
-                              },
-                            ),
-                          );
-                        },
+              layers: [
+                TileLayerOptions(
+                  urlTemplate:
+                  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                  subdomains: ['a', 'b', 'c'],
+                ),
+                MarkerLayerOptions(markers: markers),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+              ),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('reports')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot report = snapshot.data!.docs[index];
+                      GeoPoint location = report['location'];
+                      return ListTile(
+                        title: Text(report['report']),
+                        subtitle: Text("User Reported:'${report['user']}'"),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () async {
+                            await FirebaseFirestore.instance
+                                .collection('reports')
+                                .doc(report.id)
+                                .delete();
+                            _loadMarkers(); // Refresh markers after deletion
+                          },
+                        ),
                       );
                     },
-                  ),
-                ),
+                  );
+                },
               ),
-            ],
+            ),
           ),
-        ),
-        Positioned(
-          top: 90.0, // adjust this as needed
-          right: 15.0, // adjust this as needed
-          child: FloatingActionButton(
-            onPressed: () async {
-              Position position = await Geolocator.getCurrentPosition();
-              mapController.move(
-                  LatLng(position.latitude, position.longitude), 13.0);
-            },
-            child: Icon(Icons.my_location),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.blue, // Set selected icon color to blue
+        unselectedItemColor: Colors.black, // Set unselected icon color to black
+
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-        ),
-      ],
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.contacts),
+            label: 'Contacts',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+        currentIndex: selectedIndex,
+        onTap: (index) {
+          setState(() {
+            selectedIndex = index;
+          });
+          // Handle navigation to different pages based on the selected index
+          if (index == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage(title: 'Home', userId: 'userId')),
+            );
+          } else if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MapsPage()),
+            );
+          } else if (index == 2) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => ContactListPageTrial2()),
+            );
+          } else if (index == 3) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => SettingsPage()),
+            );
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          Position position = await Geolocator.getCurrentPosition();
+          mapController.move(
+              LatLng(position.latitude, position.longitude), 13.0);
+        },
+        child: Icon(Icons.my_location),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );
   }
 
@@ -191,7 +237,7 @@ class _MapsPageState extends State<MapsPage> {
   void _loadMarkers() async {
     // Fetch the reports from Firestore
     QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('reports').get();
+    await FirebaseFirestore.instance.collection('reports').get();
     // Create a new list of markers
     List<Marker> newMarkers = [];
     // Iterate through the reports

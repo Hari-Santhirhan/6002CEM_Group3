@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login_viewmodel.dart';
 
-class loginPageView extends StatelessWidget {
+class LoginPageView extends StatelessWidget {
   final LoginViewModel viewModel = LoginViewModel();
 
   @override
