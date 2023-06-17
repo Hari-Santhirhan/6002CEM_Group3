@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:safeguard_group3_project/home_screen.dart';
 import 'package:safeguard_group3_project/pages/contacts_page/contact_list_trial_2.dart';
 import 'package:safeguard_group3_project/pages/map_page/maps_page.dart';
+import 'package:safeguard_group3_project/pages/profile_page/profile_pageTest3.dart';
 import 'package:safeguard_group3_project/widget/settings_appbar_widget.dart';
 
+import '../profile_page/profile_pageTest.dart';
 import '../profile_page/profile_pageTest2.dart';
 // Other imports...
 
@@ -75,7 +77,7 @@ class _SettingsPageState extends State<SettingsPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePageTest2()),
+                  MaterialPageRoute(builder: (context) => ProfilePageTest3()),
                 );
               },
             ),
