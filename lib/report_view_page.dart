@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:safeguard_group3_project/report_model.dart';
 import 'package:safeguard_group3_project/report_viewModel_page.dart';
 import 'package:safeguard_group3_project/list/category_list.dart';
 import 'package:provider/provider.dart';
@@ -241,23 +242,47 @@ class _ReportPageState extends State<ReportPage> {
                 ),
                 color: Color(0xFFD9D9D9),
               ),
-              child: FloatingActionButton(
-                onPressed: () {
-                  // Logic Code for report button press
-                  reportViewModel.submitReport();
+              child: Consumer<ReportViewModel>(
+                builder: (context, reportViewModel, _) {
+                  return FloatingActionButton(
+                    onPressed: () async {
+                      // Generate report ID
+                      String reportId = DateTime.now().microsecondsSinceEpoch.toString();
+
+                      // Create a ReportModel instance
+                      ReportModel report = ReportModel(
+                        title: titleController.text,
+                        desc: descriptionController.text,
+                        location: locationController.text,
+                        category: selectedCategory,
+                        reportId: reportId,
+                      );
+
+                      // Submit report to Firestore
+                      await reportViewModel.submitReport(report);
+
+                      // Clear input fields
+                      titleController.clear();
+                      descriptionController.clear();
+                      locationController.clear();
+                      setState(() {
+                        selectedCategory = null;
+                      });
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                    backgroundColor: Colors.blue,
+                    child: Text(
+                      "Submit Report",
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 25,
+                        color: Colors.black,
+                      ),
+                    ),
+                  );
                 },
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                backgroundColor: Colors.blue,
-                child: Text(
-                  "Submit Report",
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 25,
-                    color: Colors.black,
-                  ),
-                ),
               ),
             ),
           ],
