@@ -8,18 +8,25 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.2
-  firebase_core: ^2.13.1
-  cloud_firestore: ^4.8.0
   loading_animation_widget: ^1.2.0+2
-  firebase_auth: ^4.6.2
   email_validator: ^2.0.1
   flutter_map: ^0.13.1
   geolocator: ^8.0.0
   permission_handler: ^8.1.6
   uuid: ^3.0.6
 
+  firebase_core: ^2.14.0
+  flutter_calendar_carousel: ^2.2.1
+
   flutter:
     sdk: flutter
+
+  firebase_auth: ^4.6.3
+  cloud_firestore: ^4.8.1
+  fluttertoast: ^8.2.2
+  bcrypt: ^1.1.3
+  crypto: ^3.0.3
+
 
 dev_dependencies:
   flutter_test:
@@ -27,7 +34,8 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
+  assets:
+    - assets/SafeGuard logo.png
+
   uses-material-design: true
 
-  assets:
-    - assets/images/
