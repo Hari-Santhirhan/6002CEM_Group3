@@ -18,8 +18,18 @@ dependencies:
   firebase_core: ^2.14.0
   flutter_calendar_carousel: ^2.2.1
 
+  camera: ^0.10.5+2
+  cloud_firestore: ^4.8.1
+  firebase_auth: ^4.6.3
+  firebase_core: ^2.14.0
+  firebase_ui_auth: ^1.4.3
   flutter:
     sdk: flutter
+  fluttertoast: ^8.2.2
+  geolocator: ^9.0.2
+  image_picker: ^0.8.4+3
+  permission_handler: ^10.3.0
+  provider: ^6.0.5
 
   firebase_auth: ^4.6.3
   cloud_firestore: ^4.8.1
