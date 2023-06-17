@@ -259,7 +259,7 @@ class _ReportPageState extends State<ReportPage> {
                       );
 
                       // Submit report to Firestore
-                      await reportViewModel.submitReport(report);
+                      await reportViewModel.submitReport(report, context);
 
                       // Clear input fields
                       titleController.clear();

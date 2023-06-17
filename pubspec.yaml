@@ -14,6 +14,7 @@ dependencies:
   firebase_ui_auth: ^1.4.3
   flutter:
     sdk: flutter
+  fluttertoast: ^8.2.2
   geolocator: ^9.0.2
   image_picker: ^0.8.4+3
   permission_handler: ^10.3.0

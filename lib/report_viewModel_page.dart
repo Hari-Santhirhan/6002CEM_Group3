@@ -6,12 +6,38 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safeguard_group3_project/report_model.dart';
 import 'package:safeguard_group3_project/report_view_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ReportViewModel extends ChangeNotifier {
   ReportModel reportModel = ReportModel();
 
-  Future<void> submitReport(ReportModel report) async {
+  Future<void> submitReport(ReportModel report, BuildContext context) async {
     try {
+      // Check if any of the details are missing
+      if (report.title == null ||
+          report.desc == null ||
+          report.location == null ||
+          report.category == null) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Incomplete Details'),
+              content: Text('Please enter all details before submitting.'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
+
       // Access the Firestore collection
       final CollectionReference reportsCollection =
       FirebaseFirestore.instance.collection('report_submissions');
@@ -21,6 +47,25 @@ class ReportViewModel extends ChangeNotifier {
 
       // Add the report to Firestore
       await reportsCollection.doc(report.reportId).set(reportData);
+
+      // Show a dialog indicating successful submission
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Submission Successful'),
+            content: Text('Report submitted successfully to Firestore.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
 
       // Notify listeners that the operation is complete
       notifyListeners();
