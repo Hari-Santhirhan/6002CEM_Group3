@@ -9,6 +9,7 @@ import 'package:safeguard_group3_project/pages/settings_page/setting_page.dart';
 import 'package:safeguard_group3_project/widget/appbar_widget.dart';
 
 import '../../home_screen.dart';
+import '../../report_view_page.dart';
 import '../contacts_page/contact_list_trial_2.dart';
 
 class MapsPage extends StatefulWidget {
@@ -20,7 +21,7 @@ class _MapsPageState extends State<MapsPage> {
   List<Marker> markers = [];
   MapController mapController = MapController();
   LatLng? currentLocation;
-  int selectedIndex = 1; // Selected index for bottom navigation bar
+  int selectedIndex = 2; // Selected index for bottom navigation bar
 
   @override
   void initState() {
@@ -105,6 +106,10 @@ class _MapsPageState extends State<MapsPage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.report_problem),
+            label: "Report",
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.map),
             label: 'Map',
           ),
@@ -128,17 +133,24 @@ class _MapsPageState extends State<MapsPage> {
               context,
               MaterialPageRoute(builder: (context) => HomePage(title: 'Home', userId: 'userId')),
             );
-          } else if (index == 1) {
+
+          }else if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => ReportPage()),
+            );
+          }
+          else if (index == 2) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => MapsPage()),
             );
-          } else if (index == 2) {
+          } else if (index == 3) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => ContactListPageTrial2()),
             );
-          } else if (index == 3) {
+          } else if (index == 4) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => SettingsPage()),

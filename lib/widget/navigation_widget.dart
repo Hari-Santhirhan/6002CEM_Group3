@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:safeguard_group3_project/home_screen.dart';
 import 'package:safeguard_group3_project/pages/map_page/maps_page.dart';
 import 'package:safeguard_group3_project/pages/settings_page/setting_page.dart';
+import 'package:safeguard_group3_project/report_view_page.dart';
 import '../pages/contacts_page/contact_list_trial_2.dart';
 
 class Navigation extends StatefulWidget {
@@ -18,6 +19,7 @@ class _NavigationState extends State<Navigation> {
   int _selectedIndex = 0;
   static List<Widget> _pages = <Widget>[
     HomePage(title: '', userId: ''),
+    ReportPage(),
     MapsPage(),
     ContactListPageTrial2(),
     SettingsPage(),
@@ -36,6 +38,10 @@ class _NavigationState extends State<Navigation> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.report_problem),
+            label: "Report",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.map),

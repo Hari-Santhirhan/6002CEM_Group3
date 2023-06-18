@@ -11,7 +11,7 @@ class AddContactPage extends StatefulWidget {
 
 class _AddContactPageState extends State<AddContactPage> {
   //current user login
-  //final curr_user = FirebaseAuth.instance.currentUser!; #uncomment later#
+  final curr_user = FirebaseAuth.instance.currentUser!.uid; //#uncomment later#
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
@@ -64,7 +64,7 @@ class _AddContactPageState extends State<AddContactPage> {
                   if (_formKey.currentState!.validate()) {
                     // If the form is valid, create a new contact and go back to the previous page
                     final newContactData = {
-                      'user': 'user_id', // Replace with curr_user
+                      'user': curr_user,//'user_id', // Replace with curr_user
                       'name': _nameController.text,
                       'phoneNumber': _phoneNumberController.text,
                       'isDeletable': true,
@@ -77,7 +77,7 @@ class _AddContactPageState extends State<AddContactPage> {
 
                     final newContact = Contact(
                       id: docRef.id,
-                      user: newContactData['user'] as String,
+                      user: curr_user,
                       name: newContactData['name'] as String,
                       phoneNumber: newContactData['phoneNumber'] as String,
                       isDeletable: true,
