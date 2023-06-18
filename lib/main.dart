@@ -1,20 +1,54 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:safeguard_group3_project/pages/contacts_page/contact_list_page.dart';
+import 'package:safeguard_group3_project/pages/contacts_page/contact_list_trial_2.dart';
+import 'package:safeguard_group3_project/pages/map_page/maps_page.dart';
+import 'package:safeguard_group3_project/pages/profile_page/profile_page.dart';
+import 'package:safeguard_group3_project/pages/profile_page/profile_pageTest.dart';
+import 'package:safeguard_group3_project/pages/settings_page/setting_page.dart';
+import 'package:safeguard_group3_project/widget/navigation_widget.dart';
+import 'firebase_options.dart';
+import 'package:safeguard_group3_project/home_screen.dart';
+import 'package:safeguard_group3_project/login_page_view.dart';
+import 'package:safeguard_group3_project/register_page_view.dart';
+import 'package:safeguard_group3_project/reset_page_view.dart';
 
-void main() {
-  runApp(const SafeGuard());
+final navigatorKey = GlobalKey<NavigatorState>();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(SafeGuard());
 }
 
 class SafeGuard extends StatelessWidget {
-  const SafeGuard({super.key});
+  const SafeGuard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello SafeGuard App!!'),
-        ),
+    return MaterialApp(
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Color.fromARGB(255, 225, 229, 130),
       ),
+      initialRoute: '/login',
+      onGenerateRoute: (settings) {
+        if (settings.name == '/login') {
+          return MaterialPageRoute(
+            builder: (context) => LoginPageView(),
+            settings: settings,
+          );
+        }
+        return null;
+      },
+      routes: {
+        '/home': (context) => HomePage(title: 'SafeGuard Home', userId: ''),
+        '/register': (context) => RegisterView(),
+        '/reset': (context) => ResetView(),
+      },
     );
   }
 }
