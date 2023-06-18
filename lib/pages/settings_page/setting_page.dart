@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:safeguard_group3_project/home_screen.dart';
 import 'package:safeguard_group3_project/pages/contacts_page/contact_list_trial_2.dart';
@@ -112,9 +113,9 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               onPressed: () {
                 //signout and go to login page
-                // Navigator.of(context).pop(); #uncomment these when login complete
-                // Navigator.of(context).pushReplacementNamed('/'); #uncomment these when login complete
-                // FirebaseAuth.instance.signOut(); #uncomment these when login complete
+                Navigator.of(context).pop(); //#uncomment these when login complete
+                Navigator.of(context).pushReplacementNamed('/'); //#uncomment these when login complete
+                FirebaseAuth.instance.signOut(); //#uncomment these when login complete
               },
             ),
           ),

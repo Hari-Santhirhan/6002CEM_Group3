@@ -13,8 +13,6 @@ class ContactListPage extends StatefulWidget {
 }
 
 class _ContactListPageState extends State<ContactListPage> {
-  //final curr_user = FirebaseAuth.instance.currentUser!; #Uncomment this when integrating
-
   List<Contact> contacts = [
     Contact(
         id: '1',
@@ -38,38 +36,41 @@ class _ContactListPageState extends State<ContactListPage> {
   ];
 
   Future loadContacts() async {
-    contacts.clear();
-    contacts = [
+    // Define hardcoded contacts
+    List<Contact> hardcodedContacts = [
       Contact(
           id: '1',
           name: 'Police',
           phoneNumber: '123-456-7890',
           user: 'Victor',
-          isDeletable: false), //change user: value to curr_user
+          isDeletable: false),
       Contact(
           id: '2',
           name: 'Hospital',
           phoneNumber: '098-765-4321',
           user: 'Victor',
-          isDeletable: false), //change user: value to curr_user
+          isDeletable: false),
       Contact(
           id: '3',
           name: 'Human Resources',
           phoneNumber: '013-254-6897',
           user: 'Victor',
-          isDeletable: false), //change user: value to curr_user
-      // Add more contacts here
+          isDeletable: false),
     ];
-    final contactDocs =
-        await FirebaseFirestore.instance.collection('contacts').get();
-    //.where('user', isEqualTo: curr_user.uid) #add this after collection once integrated
-    // with login page
+
+    final curr_user =
+        FirebaseAuth.instance.currentUser!.uid; // Get the current user's UID
+    final contactDocs = await FirebaseFirestore.instance
+        .collection('contacts')
+        .where('user', isEqualTo: curr_user)
+        .get(); // Filter the documents by user
+
     if (mounted) {
       setState(() {
-        contacts.addAll(contactDocs.docs.map((doc) => Contact.fromJson(doc.data(), doc.id)).toList());
-        // contacts = contactDocs.docs
-        //     .map((doc) => Contact.fromJson(doc.data()))
-        //     .toList();
+        contacts = hardcodedContacts; // Assign hardcoded contacts to the contacts list
+        contacts.addAll(contactDocs.docs
+            .map((doc) => Contact.fromJson(doc.data(), doc.id))
+            .toList()); // Add contacts from Firebase to the contacts list
       });
     }
   }
@@ -110,7 +111,10 @@ class _ContactListPageState extends State<ContactListPage> {
                       icon: Icon(Icons.delete),
                       onPressed: () {
                         setState(() async {
-                          await FirebaseFirestore.instance.collection('contacts').doc(contacts[index].id).delete();
+                          await FirebaseFirestore.instance
+                              .collection('contacts')
+                              .doc(contacts[index].id)
+                              .delete();
                           contacts.removeAt(index);
                         });
                       },
