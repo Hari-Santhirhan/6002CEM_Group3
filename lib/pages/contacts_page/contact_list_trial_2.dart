@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:safeguard_group3_project/home_screen.dart';
 import 'package:safeguard_group3_project/pages/contacts_page/add_contact_page.dart';
@@ -8,7 +7,6 @@ import 'package:safeguard_group3_project/pages/settings_page/setting_page.dart';
 
 import '../../model/contacts_model.dart';
 import '../../report_view_page.dart';
-import '../../widget/appbar_emptyIcon.dart';
 import '../../widget/contact_reload.dart';
 import 'contact_detail_page.dart';
 
@@ -118,7 +116,11 @@ class _ContactListPageTrial2State extends State<ContactListPageTrial2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildEmptyAppBar(context, "Contacts"),
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 43, 91, 45),
+        title: Text('Contacts'),
+        automaticallyImplyLeading: false, // Remove the back button
+      ),
       body: RefreshIndicator(
         onRefresh: loadContacts,
         child: ListView.builder(

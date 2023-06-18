@@ -86,6 +86,7 @@ class _ReportPageState extends State<ReportPage> {
             "Emergency/Disaster Response",
             style: TextStyle(fontFamily: 'Roboto', color: Colors.black),
           ),
+          automaticallyImplyLeading: false, // Remove the back button
         ),
         body: ListView(
           padding: EdgeInsets.all(16.0),

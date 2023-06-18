@@ -33,7 +33,11 @@ class _MapsPageState extends State<MapsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context, "Map Page"),
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 43, 91, 45),
+        title: Text('Map Page'),
+        automaticallyImplyLeading: false, // Remove the back button
+      ),
       body: Column(
         children: [
           Expanded(
@@ -134,13 +138,12 @@ class _MapsPageState extends State<MapsPage> {
               MaterialPageRoute(builder: (context) => HomePage(title: 'Home', userId: 'userId')),
             );
 
-          }else if (index == 1) {
+          } else if (index == 1) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => ReportPage()),
             );
-          }
-          else if (index == 2) {
+          } else if (index == 2) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => MapsPage()),

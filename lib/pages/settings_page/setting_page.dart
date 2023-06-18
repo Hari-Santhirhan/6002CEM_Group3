@@ -18,7 +18,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  int _selectedIndex = 3; // Set the initial selected index to 3 (Settings)
+  int _selectedIndex = 4; // Set the initial selected index to 3 (Settings)
 
   void _onItemTapped(int index) {
     // Handle navigation based on the index
@@ -37,7 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
         context,
         MaterialPageRoute(builder: (context) => MapsPage()),
       );
-    }else if (index == 3) {
+    } else if (index == 3) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => ContactListPageTrial2()),
@@ -49,10 +49,18 @@ class _SettingsPageState extends State<SettingsPage> {
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildSettingsAppBar(context, 'Setting'),
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 43, 91, 45),
+        title: Text(
+          'Setting',
+          style: TextStyle(fontSize: 20),
+        ),
+        automaticallyImplyLeading: false, // Remove the back button
+      ),
       backgroundColor: Color.fromRGBO(156, 180, 171, 1),
       body: ListView(
         physics: BouncingScrollPhysics(),
@@ -234,7 +242,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           padding: const EdgeInsets.all(10),
                           margin: EdgeInsets.all(10),
                           child: Text(
-                            "Victor Chieng",
+                            "Darshanaa Theivendran",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 25,
@@ -242,10 +250,10 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                           ),
                         ),
-                        //Padmessh Container
+                        //Rajadurai Container
                         Container(
                           height: 50,
-                          width: 500,
+                          width: 900,
                           decoration: BoxDecoration(
                             color: Color.fromARGB(255, 222, 202, 186),
                             border: Border.all(width: 1),
@@ -256,7 +264,29 @@ class _SettingsPageState extends State<SettingsPage> {
                           padding: const EdgeInsets.all(10),
                           margin: EdgeInsets.all(10),
                           child: Text(
-                            "Padmessh Kalyan Kumar",
+                            "Rajadurai Kannan",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        //Oscar Container
+                        Container(
+                          height: 50,
+                          width: 900,
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 222, 202, 186),
+                            border: Border.all(width: 1),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          margin: EdgeInsets.all(10),
+                          child: Text(
+                            "Oscar Cser",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 25,
@@ -266,20 +296,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ],
                     ),
-                    insetPadding: EdgeInsets.zero,
-                    actions: [
-                      TextButton(
-                        child: Text(
-                          "Back",
-                          style: TextStyle(color: Colors.white, fontSize: 30),
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                    ],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                    ),
-                    backgroundColor: Color.fromARGB(255, 28, 99, 157),
                   ),
                 );
               },
@@ -288,31 +304,33 @@ class _SettingsPageState extends State<SettingsPage> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.blue, // Set selected icon color to blue
-        unselectedItemColor: Colors.black, // Set unselected icon color to black
-
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'Map',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.contacts),
-            label: 'Contacts',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        //selectedItemColor: Colors.amber[800],
+          selectedItemColor: Colors.blue, // Set selected icon color to blue
+          unselectedItemColor: Colors.black, // Set unselected icon color to black
+          currentIndex: _selectedIndex,
+          items: [
+      BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: "Home",
+    ),
+    BottomNavigationBarItem(
+    icon: Icon(Icons.report_problem),
+    label: "Report",
+    ),
+    BottomNavigationBarItem(
+    icon: Icon(Icons.map),
+    label: "Map",
+    ),
+    BottomNavigationBarItem(
+    icon: Icon(Icons.contacts),
+    label: "Contacts",
+    ),
+    BottomNavigationBarItem(
+    icon: Icon(Icons.settings),
+    label: "Settings",
+    ),   ],
         onTap: _onItemTapped,
       ),
     );
   }
 }
+
