@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:safeguard_group3_project/report_model.dart';
 import 'package:safeguard_group3_project/report_view_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ReportViewModel extends ChangeNotifier {
   ReportModel reportModel = ReportModel();
@@ -18,12 +19,15 @@ class ReportViewModel extends ChangeNotifier {
           report.desc == null ||
           report.location == null ||
           report.category == null ||
-          report.userId == null) {
+          report.userId == null ||
+          report.imageURL == '' ||
+          report.imageURL == "" ||
+          report.imageURL!.isEmpty) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Incomplete Details ' + report.userId.toString()),
+              title: Text('Incomplete Details'),
               content: Text('Please enter all details before submitting.'),
               actions: [
                 TextButton(
@@ -60,6 +64,7 @@ class ReportViewModel extends ChangeNotifier {
               TextButton(
                 child: Text('OK'),
                 onPressed: () {
+                  reportModel.imageURL = null;
                   Navigator.of(context).pop();
                 },
               ),
@@ -74,5 +79,12 @@ class ReportViewModel extends ChangeNotifier {
       // Handle any errors that occur during the process
       print('Error submitting report: $error');
     }
+  }
+
+  Future<XFile?> uploadImage() async {
+    ImagePicker imagePicker = ImagePicker();
+    XFile? capturedImage =
+        await imagePicker.pickImage(source: ImageSource.camera);
+    return capturedImage;
   }
 }

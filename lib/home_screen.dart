@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:safeguard_group3_project/check_my_reports_view_page.dart';
+import 'package:safeguard_group3_project/news_view_page.dart';
 import 'package:safeguard_group3_project/pages/contacts_page/contact_list_trial_2.dart';
 import 'package:safeguard_group3_project/pages/map_page/maps_page.dart';
 import 'package:safeguard_group3_project/pages/settings_page/setting_page.dart';
@@ -17,7 +19,6 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
-
 
 class _HomePageState extends State<HomePage> {
   double width = 0.0;
@@ -43,16 +44,15 @@ class _HomePageState extends State<HomePage> {
     if (index == 0) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage(title: 'Home', userId: 'userId')),
+        MaterialPageRoute(
+            builder: (context) => HomePage(title: 'Home', userId: 'userId')),
       );
-
-    }else if (index == 1) {
+    } else if (index == 1) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => ReportPage()),
       );
-    }
-    else if (index == 2) {
+    } else if (index == 2) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MapsPage()),
@@ -69,8 +69,6 @@ class _HomePageState extends State<HomePage> {
       );
     }
   }
-
-
 
   Future<void> fetchUserId() async {
     try {
@@ -92,8 +90,6 @@ class _HomePageState extends State<HomePage> {
       print('Error fetching userId: $e');
     }
   }
-
-
 
   Widget backgroundView() {
     return Container(
@@ -151,15 +147,11 @@ class _HomePageState extends State<HomePage> {
           gradient: LinearGradient(
             colors: (currentMonthList[index].day != currentDateTime.day)
                 ? [
-              Colors.white.withOpacity(0.8),
-              Colors.white.withOpacity(0.7),
-              Colors.white.withOpacity(0.6)
-            ]
-                : [
-              HexColor("ED6184"),
-              HexColor("EF315B"),
-              HexColor("E2042D")
-            ],
+                    Colors.white.withOpacity(0.8),
+                    Colors.white.withOpacity(0.7),
+                    Colors.white.withOpacity(0.6)
+                  ]
+                : [HexColor("ED6184"), HexColor("EF315B"), HexColor("E2042D")],
             begin: const FractionalOffset(0.0, 0.0),
             end: const FractionalOffset(0.0, 1.0),
             stops: const [0.0, 0.5, 1.0],
@@ -190,7 +182,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Text(
-                date_util.DateUtils.weekdays[currentMonthList[index].weekday - 1],
+                date_util
+                    .DateUtils.weekdays[currentMonthList[index].weekday - 1],
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -253,10 +246,15 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               // Handle news button press
               // Navigate to news page or perform desired action
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NewsViewPage()),
+              );
             },
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
+                borderRadius:
+                    BorderRadius.circular(20), // Adjust the radius as needed
               ),
             ),
             child: Text(
@@ -275,14 +273,19 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               // Handle news button press
               // Navigate to news page or perform desired action
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CheckMyReportsPage()),
+              );
             },
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
+                borderRadius:
+                    BorderRadius.circular(20), // Adjust the radius as needed
               ),
             ),
             child: Text(
-              "Report",
+              "Check My Reports",
               style: TextStyle(
                 fontSize: 25,
               ),
@@ -310,8 +313,6 @@ class _HomePageState extends State<HomePage> {
           topView(),
         ],
       ),
-
-
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.blue, // Set selected icon color to blue
         unselectedItemColor: Colors.black, // Set unselected icon color to black

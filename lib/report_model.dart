@@ -6,7 +6,9 @@ class ReportModel {
   String? location;
   String? category;
   String? reportId;
+  String? imageURL;
   String? userId;
+  String? reportStatus;
 
   ReportModel({
     this.title,
@@ -14,7 +16,9 @@ class ReportModel {
     this.location,
     this.category,
     this.reportId,
-    this.userId
+    this.imageURL,
+    this.userId,
+    this.reportStatus,
   });
 
   Map<String, dynamic> toMap() {
@@ -24,7 +28,9 @@ class ReportModel {
       'location': location,
       'category': category,
       'reportId': reportId,
+      'imageURL' : imageURL,
       'userId' : userId,
+      'reportStatus' : reportStatus,
     };
   }
 
@@ -36,7 +42,9 @@ class ReportModel {
       location: data['location'],
       category: data['category'],
       reportId: data['reportId'],
-      userId: data['userId']
+      imageURL: data['imageURL'],
+      userId: data['userId'],
+      reportStatus: data['reportStatus'],
     );
   }
 }

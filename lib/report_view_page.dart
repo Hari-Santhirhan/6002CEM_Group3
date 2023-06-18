@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:safeguard_group3_project/pages/contacts_page/contact_list_trial_2.dart';
 import 'package:safeguard_group3_project/pages/map_page/maps_page.dart';
@@ -9,6 +10,7 @@ import 'package:safeguard_group3_project/report_model.dart';
 import 'package:safeguard_group3_project/report_viewModel_page.dart';
 import 'package:safeguard_group3_project/list/category_list.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'home_screen.dart';
 
@@ -27,7 +29,9 @@ class _ReportPageState extends State<ReportPage> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   User? userId;
-  late String? userID;
+  String userID = "";
+  XFile? capturedImage = null;
+  String imageURL = "";
 
   @override
   void dispose() {
@@ -47,16 +51,15 @@ class _ReportPageState extends State<ReportPage> {
     if (index == 0) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage(title: 'Home', userId: 'userId')),
+        MaterialPageRoute(
+            builder: (context) => HomePage(title: 'Home', userId: 'userId')),
       );
-
-    }else if (index == 1) {
+    } else if (index == 1) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => ReportPage()),
       );
-    }
-    else if (index == 2) {
+    } else if (index == 2) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MapsPage()),
@@ -91,6 +94,86 @@ class _ReportPageState extends State<ReportPage> {
         body: ListView(
           padding: EdgeInsets.all(16.0),
           children: [
+            Container(
+              height: 200,
+              width: 200,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2.0,
+                ),
+                color: Color(0xFFD9D9D9),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (capturedImage != null)
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          width: 100,
+                          height: 100,
+                          child: Image.file(
+                            File(capturedImage!.path),
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: IconButton(
+                            onPressed: () {
+                              capturedImage = null;
+                              setState(() {});
+                            },
+                            icon: Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    Transform.scale(
+                      scale: 4.0,
+                      child: Icon(
+                        Icons.upload,
+                      ),
+                    ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  SizedBox(
+                    width: 250,
+                    child: FloatingActionButton(
+                      onPressed: () async {
+                        capturedImage = await reportViewModel.uploadImage();
+                        setState(() {});
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      backgroundColor: Color(0xFF37EE49),
+                      child: Text(
+                        "Upload Image",
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             Container(
               height: 60,
               width: 200,
@@ -138,7 +221,7 @@ class _ReportPageState extends State<ReportPage> {
             ),
             SizedBox(height: 20.0),
             Container(
-              height: 200,
+              height: 80,
               width: 200,
               decoration: BoxDecoration(
                 border: Border.all(
@@ -231,7 +314,7 @@ class _ReportPageState extends State<ReportPage> {
             SizedBox(height: 5.0),
             SizedBox(height: 5.0),
             Container(
-              height: 100,
+              height: 80,
               width: 200,
               decoration: BoxDecoration(
                 border: Border.all(
@@ -276,7 +359,7 @@ class _ReportPageState extends State<ReportPage> {
             ),
             SizedBox(height: 10.0),
             Container(
-              height: 80,
+              height: 50,
               width: 200,
               decoration: BoxDecoration(
                 border: Border.all(
@@ -295,13 +378,42 @@ class _ReportPageState extends State<ReportPage> {
 
                       final FirebaseAuth _auth = FirebaseAuth.instance;
 
-                      Future<String> _getUserId() async {
-                        userId = _auth.currentUser;
-                        DocumentSnapshot snapshot = await FirebaseFirestore.instance
-                            .collection('users')
-                            .doc(userId!.uid)
-                            .get();
-                         return snapshot.id;
+                      String _getUserId() {
+                        User? currentUser = FirebaseAuth.instance.currentUser;
+                        if (currentUser != null) {
+                          String userId = currentUser.uid;
+                          return userId;
+                        } else {
+                          throw Exception('User not logged in');
+                        }
+                      }
+
+                      userID = _getUserId().toString();
+
+                      if (capturedImage != null) {
+                        String uniqueImageFileName =
+                        DateTime.now().millisecondsSinceEpoch.toString();
+
+                        // Get storage root ref
+                        Reference referenceRoot =
+                        FirebaseStorage.instance.ref();
+                        Reference referenceDirImages =
+                        referenceRoot.child('images');
+
+                        // Create ref for image to be stored
+                        Reference referenceImageUpload =
+                        referenceDirImages.child(uniqueImageFileName);
+
+                        try {
+                          // Store file
+                          await referenceImageUpload
+                              .putFile(File(capturedImage!.path));
+                          // Success! Get download URL
+                          imageURL =
+                          await referenceImageUpload.getDownloadURL();
+                        } catch (e) {
+                          print('Error uploading image: $e');;
+                        }
                       }
 
                       // Create a ReportModel instance
@@ -311,7 +423,9 @@ class _ReportPageState extends State<ReportPage> {
                         location: locationController.text,
                         category: selectedCategory,
                         reportId: reportId,
+                        imageURL: imageURL,
                         userId: userID,
+                        reportStatus: "Reported",
                       );
 
                       // Submit report to Firestore
@@ -323,6 +437,7 @@ class _ReportPageState extends State<ReportPage> {
                       locationController.clear();
                       setState(() {
                         selectedCategory = null;
+                        capturedImage = null;
                       });
                     },
                     shape: RoundedRectangleBorder(
@@ -345,7 +460,8 @@ class _ReportPageState extends State<ReportPage> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Colors.blue, // Set selected icon color to blue
-          unselectedItemColor: Colors.black, // Set unselected icon color to black
+          unselectedItemColor:
+          Colors.black, // Set unselected icon color to black
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           items: [
