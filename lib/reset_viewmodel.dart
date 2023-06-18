@@ -17,6 +17,7 @@ class ResetViewModel {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context); // Close the dialog
+                  Navigator.pop(context); // Navigate back to the previous page (login page)
                 },
                 child: Text('OK'),
               ),

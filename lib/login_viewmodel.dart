@@ -31,8 +31,29 @@ class LoginViewModel extends ChangeNotifier {
 
   Future<void> login(BuildContext context) async {
     try {
-      String email = loginModel.email;
-      String password = loginModel.password;
+      String email = loginModel.email.trim();
+      String password = loginModel.password.trim();
+
+      if (email.isEmpty || password.isEmpty) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Login Failed'),
+              content: Text('Please enter both email and password.'),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close the dialog
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
 
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -72,7 +93,48 @@ class LoginViewModel extends ChangeNotifier {
           },
         );
       }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        // Incorrect password
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Login Failed'),
+              content: Text('Incorrect password.'),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close the dialog
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        // Other FirebaseAuthException errors
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Login Failed'),
+              content: Text('An error occurred during login.'),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close the dialog
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
     } catch (e) {
       print('Error logging in: $e');
     }
-  }}
+  }
+}
