@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:safeguard_group3_project/check_my_reports_view_page.dart';
 import 'package:safeguard_group3_project/news_view_page.dart';
@@ -147,10 +148,10 @@ class _HomePageState extends State<HomePage> {
           gradient: LinearGradient(
             colors: (currentMonthList[index].day != currentDateTime.day)
                 ? [
-                    Colors.white.withOpacity(0.8),
-                    Colors.white.withOpacity(0.7),
-                    Colors.white.withOpacity(0.6)
-                  ]
+              Colors.white.withOpacity(0.8),
+              Colors.white.withOpacity(0.7),
+              Colors.white.withOpacity(0.6)
+            ]
                 : [HexColor("ED6184"), HexColor("EF315B"), HexColor("E2042D")],
             begin: const FractionalOffset(0.0, 0.0),
             end: const FractionalOffset(0.0, 1.0),
@@ -254,7 +255,7 @@ class _HomePageState extends State<HomePage> {
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius:
-                    BorderRadius.circular(20), // Adjust the radius as needed
+                BorderRadius.circular(20), // Adjust the radius as needed
               ),
             ),
             child: Text(
@@ -281,7 +282,7 @@ class _HomePageState extends State<HomePage> {
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius:
-                    BorderRadius.circular(20), // Adjust the radius as needed
+                BorderRadius.circular(20), // Adjust the radius as needed
               ),
             ),
             child: Text(
@@ -296,50 +297,73 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<bool> _onWillPop() {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Exit App'),
+        content: Text('Do you want to exit the app?'),
+        actions: <Widget>[
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text('No'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text('Yes'),
+          ),
+        ],
+      ),
+    ).then((value) => value ?? false);
+  }
+
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: AppBar(
-        // Add the desired navigation elements to the AppBar
-        // Example: leading, actions, etc.
-        title: Text(widget.title),
-        automaticallyImplyLeading: false, // Remove the back button
-      ),
-      body: Stack(
-        children: <Widget>[
-          backgroundView(),
-          topView(),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.blue, // Set selected icon color to blue
-        unselectedItemColor: Colors.black, // Set unselected icon color to black
-        currentIndex: _selectedIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.report_problem),
-            label: "Report",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: "Map",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.contacts),
-            label: "Contacts",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: "Settings",
-          ),
-        ],
-        onTap: _onItemTapped,
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        appBar: AppBar(
+          // Add the desired navigation elements to the AppBar
+          // Example: leading, actions, etc.
+          title: Text(widget.title),
+          automaticallyImplyLeading: false, // Remove the back button
+        ),
+        body: Stack(
+          children: <Widget>[
+            backgroundView(),
+            topView(),
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.blue, // Set selected icon color to blue
+          unselectedItemColor: Colors.black, // Set unselected icon color to black
+          currentIndex: _selectedIndex,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Home",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.report_problem),
+              label: "Report",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.map),
+              label: "Map",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.contacts),
+              label: "Contacts",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: "Settings",
+            ),
+          ],
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }

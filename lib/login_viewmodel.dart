@@ -23,11 +23,6 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  String hashPassword(String password) {
-    var bytes = utf8.encode(password); // Convert password to bytes
-    var hashed = sha256.convert(bytes); // Hash the bytes using SHA-256
-    return hashed.toString();
-  }
 
   Future<void> login(BuildContext context) async {
     try {
@@ -138,3 +133,11 @@ class LoginViewModel extends ChangeNotifier {
     }
   }
 }
+
+
+
+// String hashPassword(String password) {
+//   var bytes = utf8.encode(password); // Convert password to bytes
+//   var hashed = sha256.convert(bytes); // Hash the bytes using SHA-256
+//   return hashed.toString();
+// }
